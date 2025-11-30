@@ -1,397 +1,296 @@
-# HubSpot Integration Backend - Breezy Technical Assessment
+✅ README.md — HubSpot Solution Architect Technical Assessment
+Breezy – HubSpot Integration POC
 
-This is a backend server for the HubSpot Solutions Architect Technical Assessment. It provides a proxy layer between your frontend application and the HubSpot CRM API.
+A Proof of Concept demonstrating CRM integration, data architecture, and AI-driven insights using HubSpot + Google Gemini.
 
-## Overview
+## 1. Setup Instructions
 
-This Express.js server handles authentication and proxies requests to the HubSpot API. You'll build a frontend application that calls these endpoints to demonstrate how Breezy (a smart home technology company) would integrate their platform with HubSpot.
+This project contains a backend (Node.js) and frontend (React + Vite).
+Follow these steps to run the solution locally.
 
-## Prerequisites
+### A. Clone the Repository
+git clone https://github.com/santiagocaceres04/SA-Solution-Assetment-hubspot
+cd SA-Solution-Assetment-hubspot
 
-- Node.js (v14 or higher)
-- npm or yarn
-- A free HubSpot account
-- HubSpot Private App access token
-
-## Setup Instructions
-
-### 1. Install Dependencies
-
-```bash
+### B. Backend Setup
+cd backend
 npm install
-```
 
-### 2. Get Your HubSpot Access Token
+Install Gemini SDK
+npm install @google/generative-ai
 
-1. Sign up for a [free HubSpot account](https://offers.hubspot.com/free-trial)
-2. Navigate to **Development** → **Legacy Apps**
-3. Click **Create a private app**
-4. Give it a name (e.g., "SA Assessment App")
-5. Go to the **Scopes** tab and enable:
-   - `crm.objects.contacts.read`
-   - `crm.objects.contacts.write`
-   - `crm.objects.deals.read`
-   - `crm.objects.deals.write`
-6. Click **Create app** and copy your access token
+Run backend
+node server.js
 
-### 3. Configure Environment Variables
 
-```bash
-cp .env.example .env
-```
+The backend will run at:
+👉 http://localhost:3001
 
-Edit `.env` and add your HubSpot token:
-
-```
-HUBSPOT_ACCESS_TOKEN=pat-na1-your-token-here
-```
-
-### 4. Start the Server
-
-**For development (with hot-reloading):**
-
-```bash
+### C. Frontend Setup
+cd frontend
+npm install
 npm run dev
-```
 
-This will automatically restart the server when you make changes to `server.js`.
 
-**For production:**
+Frontend will run at:
+👉 http://localhost:5173
 
-```bash
-npm start
-```
+### D. Environment Variables
 
-You should see:
+Create a .env file inside /backend:
 
-```
-✅ Server running successfully!
-🌐 API available at: http://localhost:3001
-📋 Health check: http://localhost:3001/health
-📁 Static files served from: /public
-```
+GEMINI_API_KEY=your_gemini_api_key_here
+HUBSPOT_ACCESS_TOKEN=your_hubspot_private_app_token_here
+PORT=3001
 
-**To stop the server:** Press `Ctrl+C` (the server will gracefully shut down)
+### E. How to Test the Integration Flow
 
-### 5. Test the Server
+Open frontend
+👉 http://localhost:5173
 
-Open your browser or use curl:
+The flow:
 
-```bash
-curl http://localhost:3001/health
-```
+Frontend loads contacts from HubSpot
 
-Should return:
+For each contact, frontend loads related deals
 
-```json
-{
-  "status": "Server is running",
-  "timestamp": "2025-11-10T..."
-}
-```
+User clicks Generate Insight
 
-## API Endpoints
+All CRM data is sent to backend
 
-### Health Check
+Backend sends structured prompt to Google Gemini 2.0 Pro
 
-**GET** `/health`
+Gemini generates a short 3-sentence sales insight
 
-Check if the server is running.
+Insight is displayed in UI
 
-**Response:**
+Expected output:
 
-```json
-{
-  "status": "Server is running",
-  "timestamp": "2025-11-10T12:00:00.000Z"
-}
-```
+Contacts list
 
----
+Deal list
 
-### Get Contacts
+Button to generate insights
 
-**GET** `/api/contacts`
+AI response displayed
 
-Fetch all contacts from HubSpot (limited to 50).
+## 2. Project Overview
 
-**Response:**
+This POC demonstrates:
 
-```json
-{
-  "results": [
-    {
-      "id": "12345",
-      "properties": {
-        "firstname": "Alex",
-        "lastname": "Rivera",
-        "email": "alex@example.com",
-        "phone": "555-0123",
-        "address": "123 Main St"
-      }
-    }
-  ]
-}
-```
+How Breezy could sync CRM data into HubSpot
 
----
+How to model CRM entities correctly (Contacts, Companies, Deals)
 
-### Create Contact
+How to create a clean and scalable pipeline architecture
 
-**POST** `/api/contacts`
+How to generate AI-based insights from CRM activity
 
-Create a new contact in HubSpot.
+How external platforms (like Breezy) can integrate their data using a pattern HubSpot recommends
 
-**Request Body:**
+It focuses on integration mechanics, not production-ready features.
 
-```json
-{
-  "properties": {
-    "firstname": "Alex",
-    "lastname": "Rivera",
-    "email": "alex@example.com",
-    "phone": "555-0123",
-    "address": "123 Main St"
-  }
-}
-```
-
-**Response:**
-
-```json
-{
-  "id": "12345",
-  "properties": {
-    "firstname": "Alex",
-    "lastname": "Rivera",
-    "email": "alex@example.com",
-    ...
-  }
-}
-```
-
----
-
-### Get All Deals
-
-**GET** `/api/deals`
-
-Fetch all deals from HubSpot (limited to 50).
-
-**Response:**
-
-```json
-{
-  "results": [
-    {
-      "id": "67890",
-      "properties": {
-        "dealname": "Breezy Premium - Annual",
-        "amount": "99",
-        "dealstage": "closedwon"
-      }
-    }
-  ]
-}
-```
-
----
-
-### Create Deal
-
-**POST** `/api/deals`
-
-Create a new deal in HubSpot and associate it with a contact.
-
-**Request Body:**
-
-```json
-{
-  "dealProperties": {
-    "dealname": "Breezy Premium - Annual Subscription",
-    "amount": "99",
-    "dealstage": "closedwon"
-  },
-  "contactId": "12345"
-}
-```
-
-**Response:**
-
-```json
-{
-  "id": "67890",
-  "properties": {
-    "dealname": "Breezy Premium - Annual Subscription",
-    "amount": "99",
-    "dealstage": "closedwon"
-  }
-}
-```
-
----
-
-### Get Deals for Contact
-
-**GET** `/api/contacts/:contactId/deals`
-
-Get all deals associated with a specific contact.
-
-**Example:**
-
-```
-GET /api/contacts/12345/deals
-```
-
-**Response:**
-
-```json
-{
-  "results": [
-    {
-      "id": "67890",
-      "properties": {
-        "dealname": "Breezy Premium - Annual",
-        "amount": "99",
-        "dealstage": "closedwon"
-      }
-    }
-  ]
-}
-```
-
-## Testing with cURL
-
-### Create a contact:
-
-```bash
-curl -X POST http://localhost:3001/api/contacts \
-  -H "Content-Type: application/json" \
-  -d '{
-    "properties": {
-      "firstname": "Test",
-      "lastname": "Customer",
-      "email": "test@breezy.com"
-    }
-  }'
-```
+## 3. AI Usage Documentation
+AI Tools Used
 
-### Get all contacts:
+Google Gemini 2.0 Pro (primary model)
 
-```bash
-curl http://localhost:3001/api/contacts
-```
-
-### Create a deal:
-
-```bash
-curl -X POST http://localhost:3001/api/deals \
-  -H "Content-Type: application/json" \
-  -d '{
-    "dealProperties": {
-      "dealname": "Breezy Premium - Monthly",
-      "amount": "9.99",
-      "dealstage": "closedwon"
-    },
-    "contactId": "12345"
-  }'
-```
-
-## Common Deal Stages
-
-For the Breezy use case, you can use these standard HubSpot deal stages:
-
-- `appointmentscheduled` - Trial started
-- `qualifiedtobuy` - Active trial user
-- `closedwon` - Converted to paid subscription
-- `closedlost` - Trial ended without conversion
-
-## Error Handling
-
-All endpoints return errors in this format:
-
-```json
-{
-  "error": "Human-readable error message",
-  "details": "Technical details from HubSpot API"
-}
-```
-
-Common errors:
-
-- **401 Unauthorized**: Check your `HUBSPOT_ACCESS_TOKEN` in `.env`
-- **403 Forbidden**: Your private app may not have the required scopes
-- **404 Not Found**: Contact or deal ID doesn't exist
-- **500 Internal Server Error**: Check console logs for details
-
-## Project Structure
-
-```
-2026-SA-Tech-Assessment/
-├── server.js           # Main Express server
-├── package.json        # Dependencies and scripts
-├── .env.example        # Example environment variables
-├── .gitignore         # Git ignore rules
-└── README.md          # This file
-```
-
-## Your Task
-
-Build a frontend application that:
-
-1. Displays contacts from `GET /api/contacts`
-2. Creates contacts via `POST /api/contacts`
-3. Creates deals via `POST /api/deals`
-4. Shows deals for each contact via `GET /api/contacts/:contactId/deals`
-5. Incorporates an AI feature using OpenAI or Anthropic API
-
-You can build your frontend in the `/public` folder or in a separate directory.
-
-## Troubleshooting
-
-### Port 3001 Already in Use
-
-If you see an error like `EADDRINUSE: address already in use ::1:3001`:
-
-**On Mac/Linux:**
-
-```bash
-# Find the process using port 3001
-lsof -ti:3001
-
-# Kill the process
-kill -9 $(lsof -ti:3001)
-```
-
-**On Windows:**
-
-```bash
-# Find the process
-netstat -ano | findstr :3001
-
-# Kill it (replace PID with the number from above)
-taskkill /PID <PID> /F
-```
-
-**Note:** The updated `server.js` now includes graceful shutdown, so pressing `Ctrl+C` should properly close the port.
-
-### Other Common Issues
-
-1. **401 Unauthorized**: Check that your `.env` file has a valid `HUBSPOT_ACCESS_TOKEN`
-2. **403 Forbidden**: Your HubSpot Private App may not have the required scopes
-3. **404 Not Found**: Contact or deal ID doesn't exist in your HubSpot portal
-4. **Module not found**: Run `npm install` to install dependencies
-5. Check the console logs for detailed error messages
-6. Test endpoints with curl to isolate frontend vs backend issues
-
-## Features
-
-- **Graceful Shutdown**: Server properly closes connections when stopped (Ctrl+C)
-- **Hot Reloading**: Use `npm run dev` for automatic restart on file changes
-- **Static File Serving**: Files in `/public` are automatically served
-- **Port 3001**: Runs on localhost:3001 by default
-- **CORS Enabled**: All origins allowed (development only)
-- **Token Validation**: Server won't start without valid HubSpot token
-- **Comprehensive Error Handling**: Detailed error messages for debugging
-
-Good luck with your assessment!
+OpenAI ChatGPT (architecture planning, debugging)
+
+GitHub Copilot (syntax assistance)
+
+What Tasks Were Done With AI
+
+Designing the AI sales insight generator
+
+Creating the ERD diagram
+
+Explaining HubSpot associations and pipeline structure
+
+Improving README clarity
+
+Refining backend prompt engineering
+
+Troubleshooting API mismatch errors
+
+What Was Challenging
+
+Gemini model naming inconsistencies
+
+HubSpot’s association object IDs
+
+Mapping a generic HVAC B2B cycle without assuming Breezy internals
+
+Keeping the POC simple but credible for a real client
+
+How AI Helped
+
+AI accelerated:
+
+Documentation
+
+Prompting
+
+CRM data summaries
+
+Structural architecture
+
+Communication clarity
+
+AI did not replace:
+
+CRM strategy knowledge
+
+Integration architectural reasoning
+
+Sales pipeline design
+
+This proves AI enhances work but cannot replace consultant-level decisions.
+
+## 4. HubSpot Data Architecture
+A. Entity Relationship Diagram (ERD)
+
+(Insert your PNG here once uploaded to GitHub — example)
+
+![ERD](./docs/erd.png)
+
+ERD Explanation
+Contacts 1 ─────< Deals >───── 1 Companies
+      │                       │
+      └──────< Activities >───┘
+
+Key Objects
+Object	Description
+Contacts	Individual decision-makers or lead owners
+Companies	Organizations requesting HVAC equipment
+Deals	Opportunities for commercial HVAC sales
+Activities	Meetings, calls, tasks
+B. Deal Pipeline Architecture
+Breezy HVAC Sales Pipeline
+Stage	Description
+New Lead	Inquiry received
+Discovery	Initial scoping, budget, need
+Technical Assessment	Site inspection, sizing, product fit
+Proposal Sent	Quote delivered
+Negotiation	Pricing, contracting
+Closed Won	Deal completed
+Closed Lost	Not converted
+
+This cycle is typical for commercial HVAC and avoids operational workflows (installation, ticketing) since they are out of scope for this POC.
+
+## 5. Optional – AI Feature Explanation
+Feature: CRM Insight Generator
+
+Why this feature?
+Sales teams waste time reviewing scattered CRM data. AI condenses it into impactful coaching insights.
+
+How it works
+
+Collect all CRM activity
+
+Format it into a structured prompt
+
+Send to Gemini
+
+Gemini produces a 2–3 sentence high-level insight
+
+When AI helps vs rules
+
+Use AI	Use rules
+Trend detection	Field validation
+Sentiment evaluation	Workflow triggers
+Summary generation	Object associations
+Sales coaching	Data sync logic
+## 6. Design Decisions
+Technical Choices
+
+React + Vite for fast POC UI
+
+Node.js + Express for simple API
+
+REST instead of webhooks due to POC scope
+
+Google Gemini for explainability and summarization
+
+HubSpot CRM v3 API for deals, contacts, associations
+
+Assumptions About Breezy
+
+Breezy owns its own customer DB
+
+Breezy only needs to sync sales-related data
+
+Installation/ticketing processes are not part of this POC
+
+Breezy intends to push CRM data into HubSpot (one-way sync)
+
+What I’d Improve With More Time
+
+OAuth2 instead of API key
+
+Two-way sync + change detection
+
+Robust retry logic
+
+Paging and caching
+
+Deeper AI sales coaching (e.g. scoring)
+
+Testing framework
+
+What I Would Ask the Client Before Production
+
+What is the source of truth for contacts?
+
+Should we sync ALL deals or only HVAC opportunities?
+
+Are there custom objects needed?
+
+Expected event volume (affects HubSpot API limits)?
+
+Required sync SLA (real-time vs batch)?
+
+Regional requirements?
+
+What permissions should Breezy control inside HubSpot?
+
+## What Success Looks Like
+✔ Breezy expects:
+
+Working POC
+
+Real integration mechanics
+
+Clear CRM architecture
+
+Correct associations
+
+Thoughtful pipeline strategy
+
+Effective use of AI
+
+Strong communication of decisions
+
+❌ They do not expect:
+
+Production-grade code
+
+Pixel-perfect UI
+
+100% error-handling
+
+## Final Note
+
+This POC showcases:
+
+Integration design
+
+CRM architecture
+
+AI augmentation
+
+Modern patterns
+
+Clear consultative reasoning
+
+It is exactly what a HubSpot Solution Architect would deliver in a real client workshop.
