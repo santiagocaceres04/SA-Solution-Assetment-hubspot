@@ -4,6 +4,13 @@ const cors = require('cors');
 const axios = require('axios');
 const path = require('path');
 
+// ====================== IA GENERATIVA - GEMINI ======================
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// 🔥 MODELO ACTUALIZADO (no existe gemini-1.5-pro)
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
 const app = express();
 const PORT = 3001;
 
@@ -25,7 +32,14 @@ if (!HUBSPOT_TOKEN) {
   process.exit(1);
 }
 
-// Health check endpoint
+// ====================== VALIDATE GEMINI KEY ======================
+if (!process.env.GEMINI_API_KEY) {
+  console.error("❌ ERROR: GEMINI_API_KEY not found in .env");
+  process.exit(1);
+}
+
+
+// ====================== HEALTH CHECK ======================
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'Server is running', 
@@ -33,7 +47,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-// GET endpoint - Fetch contacts from HubSpot
+// =============================================================
+// =============== CONTACTS ENDPOINTS ===========================
+// =============================================================
+
+// GET contacts
 app.get('/api/contacts', async (req, res) => {
   try {
     const response = await axios.get(
@@ -59,7 +77,7 @@ app.get('/api/contacts', async (req, res) => {
   }
 });
 
-// POST endpoint - Create new contact in HubSpot
+// POST create contact
 app.post('/api/contacts', async (req, res) => {
   try {
     const response = await axios.post(
@@ -84,7 +102,11 @@ app.post('/api/contacts', async (req, res) => {
   }
 });
 
-// GET endpoint - Fetch all deals from HubSpot
+// =============================================================
+// =============== DEALS ENDPOINTS ==============================
+// =============================================================
+
+// GET all deals
 app.get('/api/deals', async (req, res) => {
   try {
     const response = await axios.get(
@@ -110,12 +132,11 @@ app.get('/api/deals', async (req, res) => {
   }
 });
 
-// POST endpoint - Create new deal and associate to contact
+// POST create deal + associate
 app.post('/api/deals', async (req, res) => {
   try {
     const { dealProperties, contactId } = req.body;
     
-    // Create the deal with association to contact
     const dealResponse = await axios.post(
       `${HUBSPOT_API_BASE}/crm/v3/objects/deals`,
       {
@@ -124,7 +145,7 @@ app.post('/api/deals', async (req, res) => {
           to: { id: contactId },
           types: [{
             associationCategory: "HUBSPOT_DEFINED",
-            associationTypeId: 3 // Deal to Contact association
+            associationTypeId: 3
           }]
         }] : []
       },
@@ -146,12 +167,11 @@ app.post('/api/deals', async (req, res) => {
   }
 });
 
-// GET endpoint - Fetch deals associated with a specific contact
+// GET deals for a contact
 app.get('/api/contacts/:contactId/deals', async (req, res) => {
   try {
     const { contactId } = req.params;
-    
-    // First, get the deal associations for this contact
+
     const associationsResponse = await axios.get(
       `${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}/associations/deals`,
       {
@@ -161,11 +181,13 @@ app.get('/api/contacts/:contactId/deals', async (req, res) => {
         }
       }
     );
-    
-    // If there are associated deals, fetch their full details
-    if (associationsResponse.data.results && associationsResponse.data.results.length > 0) {
+
+    if (
+      associationsResponse.data.results &&
+      associationsResponse.data.results.length > 0
+    ) {
       const dealIds = associationsResponse.data.results.map(r => r.id);
-      
+
       const dealsResponse = await axios.post(
         `${HUBSPOT_API_BASE}/crm/v3/objects/deals/batch/read`,
         {
@@ -179,7 +201,7 @@ app.get('/api/contacts/:contactId/deals', async (req, res) => {
           }
         }
       );
-      
+
       res.json(dealsResponse.data);
     } else {
       res.json({ results: [] });
@@ -193,7 +215,38 @@ app.get('/api/contacts/:contactId/deals', async (req, res) => {
   }
 });
 
-// Start server
+// =============================================================
+// ================ IA GENERATIVA ENDPOINT ======================
+// =============================================================
+app.post("/api/ai", async (req, res) => {
+  try {
+    const { contacts, deals } = req.body;
+
+    const prompt = `
+      Generate CRM insights based on the following:
+      Contacts: ${JSON.stringify(contacts)}
+      Deals: ${JSON.stringify(deals)}
+      Provide 3 short actionable business recommendations.
+    `;
+
+    const result = await model.generateContent(prompt);
+    const insight = result.response.text();
+
+    res.json({ insight });
+
+  } catch (error) {
+    console.error("AI Error:", error);
+    res.status(500).json({
+      error: "AI request failed",
+      details: error?.message,
+    });
+  }
+});
+
+
+// =============================================================
+// ====================== START SERVER ==========================
+// =============================================================
 const server = app.listen(PORT, () => {
   console.log('\n✅ Server running successfully!');
   console.log(`🌐 API available at: http://localhost:${PORT}`);
@@ -203,34 +256,3 @@ const server = app.listen(PORT, () => {
   console.log('🛑 To stop server: Press Ctrl+C\n');
 });
 
-// Graceful shutdown handling
-const gracefulShutdown = (signal) => {
-  console.log(`\n⚠️  Received ${signal}, closing server gracefully...`);
-  
-  server.close(() => {
-    console.log('✅ Server closed successfully');
-    console.log('👋 Goodbye!\n');
-    process.exit(0);
-  });
-
-  // Force close after 10 seconds if graceful shutdown fails
-  setTimeout(() => {
-    console.error('❌ Forced shutdown after timeout');
-    process.exit(1);
-  }, 10000);
-};
-
-// Handle termination signals
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-
-// Handle uncaught errors
-process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
-  gracefulShutdown('UNCAUGHT_EXCEPTION');
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
-  gracefulShutdown('UNHANDLED_REJECTION');
-});
