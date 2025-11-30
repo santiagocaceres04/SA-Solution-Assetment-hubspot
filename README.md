@@ -1,296 +1,281 @@
-✅ README.md — HubSpot Solution Architect Technical Assessment
-Breezy – HubSpot Integration POC
+# 🌀 HubSpot Integration POC – Breezy Air Systems  
+**Solution Architect Technical Assessment**
 
-A Proof of Concept demonstrating CRM integration, data architecture, and AI-driven insights using HubSpot + Google Gemini.
+Este repositorio contiene un Proof-of-Concept (POC) que demuestra cómo integrar una plataforma externa con HubSpot utilizando Node.js, React (Vite), la API de HubSpot CRM y Gemini AI para análisis inteligente de contactos y deals.
 
-## 1. Setup Instructions
+---
 
-This project contains a backend (Node.js) and frontend (React + Vite).
-Follow these steps to run the solution locally.
+# 🔧 A. Setup Instructions
 
-### A. Clone the Repository
-git clone https://github.com/santiagocaceres04/SA-Solution-Assetment-hubspot
-cd SA-Solution-Assetment-hubspot
+## 1. Prerequisitos
+- Node.js v18+
+- Cuenta de HubSpot con permisos CRM
+- Private App Token de HubSpot
+- API Key de Google Gemini
+- Git
 
-### B. Backend Setup
+---
+
+# 🧰 B. Backend Setup (Node.js)
+
+### 1. Ingresar a la carpeta backend
+```bash
 cd backend
+
+2. Instalar dependencias
+
 npm install
 
-Install Gemini SDK
+3. Instalar el SDK de Gemini
+
 npm install @google/generative-ai
 
-Run backend
+4. Crear archivo .env
+
+GEMINI_API_KEY=tu_api_key_aqui
+HUBSPOT_ACCESS_TOKEN=tu_token_de_private_app
+
+5. Ejecutar backend
+
 node server.js
 
-
-The backend will run at:
+El backend correrá en:
 👉 http://localhost:3001
+💻 C. Frontend Setup (React + Vite)
+1. Ingresar al frontend
 
-### C. Frontend Setup
 cd frontend
+
+2. Instalar dependencias
+
 npm install
+
+3. Ejecutar el proyecto
+
 npm run dev
 
-
-Frontend will run at:
+Frontend disponible en:
 👉 http://localhost:5173
+🔐 D. Expected Environment Variables
 
-### D. Environment Variables
+# Backend
+GEMINI_API_KEY=xxxx
+HUBSPOT_ACCESS_TOKEN=xxxx
 
-Create a .env file inside /backend:
+🧪 E. How to Test the Integration Flow
 
-GEMINI_API_KEY=your_gemini_api_key_here
-HUBSPOT_ACCESS_TOKEN=your_hubspot_private_app_token_here
-PORT=3001
+1. Ejecutar backend y frontend.
+2. Navegar al menú "AI Insights" del frontend.
+3. Click en “Generate Insight”.
+4. El frontend llama al backend → backend consulta Contacts y Deals en HubSpot.
+5. Backend envía la información a Gemini → genera un insight CRM.
+6. Resultado mostrado en pantalla.
 
-### E. How to Test the Integration Flow
+🌐 F. Project Overview
 
-Open frontend
-👉 http://localhost:5173
+Este POC demuestra:
 
-The flow:
+    Cómo conectar un sistema externo con HubSpot CRM.
 
-Frontend loads contacts from HubSpot
+    Cómo leer y escribir contactos y deals.
 
-For each contact, frontend loads related deals
+    Cómo relacionar objetos vía asociaciones HubSpot.
 
-User clicks Generate Insight
+    Cómo enriquecer datos utilizando IA (Gemini).
 
-All CRM data is sent to backend
+    Cómo estructurar un modelo de datos HubSpot adecuado para un negocio que vende aires acondicionados e instalaciones.
 
-Backend sends structured prompt to Google Gemini 2.0 Pro
+El objetivo NO es construir un sistema completo, sino demostrar patrones de integración y buenas prácticas técnicas.
+🤖 G. AI Usage Documentation
+✔ ¿Qué herramientas de IA se utilizaron?
 
-Gemini generates a short 3-sentence sales insight
+    Google Gemini 1.5 Flash
 
-Insight is displayed in UI
+    SDK @google/generative-ai
 
-Expected output:
+✔ ¿Para qué se usó IA en este POC?
 
-Contacts list
+    Generación de insights basados en Contactos + Deals desde HubSpot.
 
-Deal list
+    Resúmenes comerciales.
 
-Button to generate insights
+    Explicación automática de oportunidades.
 
-AI response displayed
+✔ ¿Qué aprendí?
 
-## 2. Project Overview
+    Cómo integrar Gemini con Node.js de forma limpia.
 
-This POC demonstrates:
+    La importancia del pre-procesamiento antes de enviar datos a un modelo LLM.
 
-How Breezy could sync CRM data into HubSpot
+    A manejar límites de tamaño y optimización de prompts.
 
-How to model CRM entities correctly (Contacts, Companies, Deals)
+✔ ¿Qué fue retador?
 
-How to create a clean and scalable pipeline architecture
+    Evitar enviar demasiados datos a Gemini (optimizar payload).
 
-How to generate AI-based insights from CRM activity
+    Estructurar un prompt que genere insights útiles y concretos.
 
-How external platforms (like Breezy) can integrate their data using a pattern HubSpot recommends
+✔ ¿Cómo ayudó la IA?
 
-It focuses on integration mechanics, not production-ready features.
+    Permitió generar insights de CRM automáticamente.
 
-## 3. AI Usage Documentation
-AI Tools Used
+    Aceleró el análisis comercial sin reglas complejas.
 
-Google Gemini 2.0 Pro (primary model)
+    Redujo tiempo de desarrollo para construir lógica manual.
 
-OpenAI ChatGPT (architecture planning, debugging)
+🏗️ H. HubSpot Data Architecture
 
-GitHub Copilot (syntax assistance)
+(Respuesta completa a Part 2 del Assessment)
+1. Entity Relationship Diagram (ERD)
 
-What Tasks Were Done With AI
+✔ Objetos principales
+Objeto	Descripción
+Contacts	Clientes o leads interesados en productos.
+Deals	Oportunidades de venta asociadas a un contacto.
+Products (opcional)	Catálogo de aires, repuestos o servicios.
+✔ Propiedades recomendadas
 
-Designing the AI sales insight generator
+Contacts
 
-Creating the ERD diagram
+    firstname
 
-Explaining HubSpot associations and pipeline structure
+    lastname
 
-Improving README clarity
+    email
 
-Refining backend prompt engineering
+    phone
 
-Troubleshooting API mismatch errors
+    address
 
-What Was Challenging
+    lead_source
 
-Gemini model naming inconsistencies
+    status
 
-HubSpot’s association object IDs
+Deals
 
-Mapping a generic HVAC B2B cycle without assuming Breezy internals
+    dealname
 
-Keeping the POC simple but credible for a real client
+    amount
 
-How AI Helped
+    dealstage
 
-AI accelerated:
+    closedate
 
-Documentation
+    pipeline
 
-Prompting
+    product_type (aire / instalación / mantenimiento)
 
-CRM data summaries
+    lead_temperature (AI-enriched)
 
-Structural architecture
+Products (opcional)
 
-Communication clarity
+    name
 
-AI did not replace:
+    category
 
-CRM strategy knowledge
+    sku
 
-Integration architectural reasoning
+    standard_price
 
-Sales pipeline design
+✔ Associations
 
-This proves AI enhances work but cannot replace consultant-level decisions.
+    Contact → Deal (1:M)
 
-## 4. HubSpot Data Architecture
-A. Entity Relationship Diagram (ERD)
+    Deal → Product (M:M)
 
-(Insert your PNG here once uploaded to GitHub — example)
+✔ ¿Por qué este diseño?
 
-![ERD](./docs/erd.png)
+    Se ajusta al modelo estándar de HubSpot CRM.
 
-ERD Explanation
-Contacts 1 ─────< Deals >───── 1 Companies
-      │                       │
-      └──────< Activities >───┘
+    Escalable para futuros módulos como instalaciones o tickets.
 
-Key Objects
-Object	Description
-Contacts	Individual decision-makers or lead owners
-Companies	Organizations requesting HVAC equipment
-Deals	Opportunities for commercial HVAC sales
-Activities	Meetings, calls, tasks
-B. Deal Pipeline Architecture
-Breezy HVAC Sales Pipeline
-Stage	Description
-New Lead	Inquiry received
-Discovery	Initial scoping, budget, need
-Technical Assessment	Site inspection, sizing, product fit
-Proposal Sent	Quote delivered
-Negotiation	Pricing, contracting
-Closed Won	Deal completed
-Closed Lost	Not converted
+    Permite reportes claros de ciclo de vida, ingresos y conversiones.
 
-This cycle is typical for commercial HVAC and avoids operational workflows (installation, ticketing) since they are out of scope for this POC.
+    Alineado con el negocio (venta e instalación de aires).
 
-## 5. Optional – AI Feature Explanation
-Feature: CRM Insight Generator
+🔄 I. Deal Pipeline Architecture
 
-Why this feature?
-Sales teams waste time reviewing scattered CRM data. AI condenses it into impactful coaching insights.
+Propuesta para Breezy Air Systems:
+Pipeline: Sales Pipeline
+Stage	Descripción
+1. New Lead	Primer contacto o formulario.
+2. Qualified	Interés validado (tamaño del aire, espacio, presupuesto).
+3. Quote Sent	Cotización enviada.
+4. Negotiation	Ajustes finales / visitas técnicas.
+5. Closed Won	Venta exitosa.
+6. Closed Lost	Venta perdida.
+✨ J. Optional – AI Feature Explanation
+✔ ¿Qué hace la funcionalidad de IA?
 
-How it works
+Genera un insight en lenguaje natural basado en los datos del CRM:
 
-Collect all CRM activity
+    Actividad reciente
 
-Format it into a structured prompt
+    Contactos más promisorios
 
-Send to Gemini
+    Deals en riesgo
 
-Gemini produces a 2–3 sentence high-level insight
+    Recomendaciones comerciales
 
-When AI helps vs rules
+✔ ¿Por qué esta funcionalidad?
 
-Use AI	Use rules
-Trend detection	Field validation
-Sentiment evaluation	Workflow triggers
-Summary generation	Object associations
-Sales coaching	Data sync logic
-## 6. Design Decisions
-Technical Choices
+    Aporta valor inmediato al negocio sin complejidad.
 
-React + Vite for fast POC UI
+    Muestra el poder de combinar CRM + IA.
 
-Node.js + Express for simple API
+✔ ¿Cuándo usar IA vs reglas tradicionales?
+Uso	IA	Reglas
+Resumen CRM	✔	
+Alerta exacta “email missing”		✔
+Predicción tendencia de cierre	✔	
+Validaciones simples		✔
+🧠 K. Design Decisions
+✔ Decisiones técnicas
 
-REST instead of webhooks due to POC scope
+    Node.js + Express para backend por simplicidad.
 
-Google Gemini for explainability and summarization
+    React + Vite para frontend rápido.
 
-HubSpot CRM v3 API for deals, contacts, associations
+    Asociación Contact ↔ Deal basada en HubSpot API.
 
-Assumptions About Breezy
+    Gemini para insights automáticos.
 
-Breezy owns its own customer DB
+✔ Supuestos sobre Breezy
 
-Breezy only needs to sync sales-related data
+    Manejan ventas de productos (aires) y servicios.
 
-Installation/ticketing processes are not part of this POC
+    Requieren insights comerciales automáticos.
 
-Breezy intends to push CRM data into HubSpot (one-way sync)
+    Necesitan claridad en el pipeline de ventas.
 
-What I’d Improve With More Time
+✔ ¿Qué mejoraría con más tiempo?
 
-OAuth2 instead of API key
+    Webhooks para sincronización en tiempo real.
 
-Two-way sync + change detection
+    Pagos o facturación conectada.
 
-Robust retry logic
+    Un módulo de órdenes de trabajo.
 
-Paging and caching
+✔ Preguntas al cliente antes de producción
 
-Deeper AI sales coaching (e.g. scoring)
+    ¿Cuál es el volumen esperado de datos?
 
-Testing framework
+    ¿Necesitan sincronización bidireccional?
 
-What I Would Ask the Client Before Production
+    ¿Quieren soporte para múltiples pipelines?
 
-What is the source of truth for contacts?
+    ¿Qué métricas son más importantes para el negocio?
 
-Should we sync ALL deals or only HVAC opportunities?
+✔ What Success Looks Like
 
-Are there custom objects needed?
+Este POC demuestra:
 
-Expected event volume (affects HubSpot API limits)?
+    Integración funcional con HubSpot
 
-Required sync SLA (real-time vs batch)?
+    Estructura de datos clara y escalable
 
-Regional requirements?
+    Uso real de IA para valor comercial
 
-What permissions should Breezy control inside HubSpot?
+    Documentación clara y consultiva
 
-## What Success Looks Like
-✔ Breezy expects:
-
-Working POC
-
-Real integration mechanics
-
-Clear CRM architecture
-
-Correct associations
-
-Thoughtful pipeline strategy
-
-Effective use of AI
-
-Strong communication of decisions
-
-❌ They do not expect:
-
-Production-grade code
-
-Pixel-perfect UI
-
-100% error-handling
-
-## Final Note
-
-This POC showcases:
-
-Integration design
-
-CRM architecture
-
-AI augmentation
-
-Modern patterns
-
-Clear consultative reasoning
-
-It is exactly what a HubSpot Solution Architect would deliver in a real client workshop.
+    Pensamiento de Solution Architect
