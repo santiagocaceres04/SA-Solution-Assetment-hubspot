@@ -1,8 +1,8 @@
-# 🌬️ HubSpot + Gemini AI Integration POC: Breezy Air Systems
+# HubSpot + Gemini AI Integration POC: Breezy Air Systems
 
 This document serves as the final documentation and technical assessment for the **Proof of Concept (PoC)** demonstrating a seamless integration between an application stack, **HubSpot CRM**, and **Google Gemini AI** for Breezy Air Systems.
 
-## 🚀 1. Project Overview
+##  1. Project Overview
 
 This PoC showcases an end-to-end integration connecting:
 
@@ -16,11 +16,11 @@ The PoC demonstrates the **data integration** between the transactional applicat
 
 ---
 
-## 🛠️ 2. Setup and Testing Guide
+## 2. Setup and Testing Guide
 
 ### A. Setup Instructions
 
-#### 📋 Prerequisites
+####  Prerequisites
 Ensure you have the following dependencies installed:
 
 * **Node.js** (v18+)
@@ -29,7 +29,7 @@ Ensure you have the following dependencies installed:
 * **Google AI Studio Key** (for Gemini)
 * Web Browser (Chrome/Edge recommended)
 
-#### ⚙️ Backend Setup (Node.js)
+#### Backend Setup (Node.js)
 
 1.  Navigate to the backend folder:
     ```bash
@@ -52,9 +52,9 @@ Ensure you have the following dependencies installed:
     ```bash
     node server.js
     ```
-    👉 **Backend URL:** `http://localhost:3001`
+    **Backend URL:** `http://localhost:3001`
 
-#### 💻 Frontend Setup (React + Vite)
+####  Frontend Setup (React + Vite)
 
 1.  Navigate to the frontend folder:
     ```bash
@@ -68,7 +68,7 @@ Ensure you have the following dependencies installed:
     ```bash
     npm run dev
     ```
-    👉 **Frontend URL:** `http://localhost:5173`
+     **Frontend URL:** `http://localhost:5173`
 
 ### How to Test the Integration Flow
 
@@ -79,7 +79,7 @@ Ensure you have the following dependencies installed:
 
 ---
 
-## 🤖 3. AI Usage Documentation
+##  3. AI Usage Documentation
 
 ### C. AI Usage Documentation
 
@@ -92,7 +92,7 @@ Ensure you have the following dependencies installed:
 
 ---
 
-## 🌟 4. AI Feature Explanation
+## 4. AI Feature Explanation
 
 ### E. AI Feature Explanation: Commercial Insights
 
@@ -105,7 +105,7 @@ Ensure you have the following dependencies installed:
 
 ---
 
-## 🏗️ 5. HubSpot Data Architecture
+##  5. HubSpot Data Architecture
 
 ### D. HubSpot Data Architecture
 
@@ -137,7 +137,7 @@ This pipeline is designed specifically to track the revenue associated with the 
 
 ---
 
-## ⚙ F. Design Decisions
+##  F. Design Decisions
 
 ### Technical Choices
 * **Node.js + Express:** Chosen for a fast, scalable backend for API integration.
