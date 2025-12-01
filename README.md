@@ -1,182 +1,158 @@
 # 🌀 HubSpot Integration POC – Breezy Air Systems  
 **Solution Architect Technical Assessment**
+📌 A. Project Overview
 
-A. Setup Instructions
-1. How to Run the Application Locally
-Backend
+This Proof of Concept demonstrates an end-to-end integration between:
+
+A Node.js backend
+
+A React + Vite frontend
+
+HubSpot CRM API (Contacts + Deals)
+
+Gemini 2.5 Flash AI model
+
+The goal is to show Breezy how CRM data, AI insights, and app workflows can be unified in a single experience without feeling like disconnected systems.
+
+You will see:
+
+✔ Sync of Contacts and Deals
+✔ Associations between CRM objects
+✔ Real-time AI insights
+✔ A recommended HubSpot Data Architecture
+✔ A sales pipeline aligned to Breezy’s HVAC business
+
+🛠️ B. Setup Instructions
+1. Backend Setup (Node.js)
+Navigate to backend folder
 cd backend
+
+Install dependencies
 npm install
+
+Install Gemini SDK
 npm install @google/generative-ai
+
+Create .env
+GEMINI_API_KEY=your_google_api_key_here
+HUBSPOT_ACCESS_TOKEN=your_hubspot_private_app_token_here
+
+Run backend
 node server.js
 
 
-Backend will be available at:
+Backend will run at:
 👉 http://localhost:3001
 
-Frontend
+2. Frontend Setup (React + Vite)
+Navigate to frontend
 cd frontend
+
+Install dependencies
 npm install
+
+Run the frontend
 npm run dev
 
 
-Frontend will be available at:
+Frontend will run at:
 👉 http://localhost:5173
 
-2. Dependencies / Prerequisites
+3. Prerequisites
 
-Node.js 18+
+Node.js v18+
 
-NPM 9+
+NPM v9+
 
 HubSpot Private App Token
 
-Google AI Studio API Key (Gemini)
+Google AI Studio Key (Gemini)
 
-Modern browser (Chrome, Edge, Firefox)
-
-Vite + React
-
-Express.js
-
-Axios
-
-3. Required Environment Variables
-
-Create a .env file inside the backend folder:
-
-GEMINI_API_KEY=your_google_ai_key_here
-HUBSPOT_ACCESS_TOKEN=your_hubspot_private_app_token_here
+Browser (Chrome/Edge)
 
 4. How to Test the Integration Flow
 
-Open the frontend.
+Start the backend
 
-Create a contact from the Contacts page.
+Start the frontend
 
-Create a deal and associate it with a contact from the Deals page.
+Create a contact → appears in HubSpot
 
-Go to AI Insights.
+Create a deal → associated to a contact
 
-Click Generate Insight.
+Go to AI Insights page
 
-The backend will:
+Click Generate Insight
 
-Fetch contacts + deals from HubSpot
+Gemini analyzes CRM data (Contacts + Deals) and returns insights
 
-Send them to Gemini 2.5 Flash
+Simple, fast, and complete.
 
-Generate a commercial insight
-
-Return the insight to the frontend
-
-🔵 B. Project Overview
-
-This Proof of Concept (POC) demonstrates:
-
-✔ A full integration between:
-
-A transactional application (custom backend)
-
-HubSpot CRM (Contacts + Deals)
-
-A React frontend that manages and displays CRM data
-
-✔ Goal of the POC
-
-Create an integration where HubSpot does not feel like a separate system, but part of Breezy’s business workflow.
-
-✔ AI Use Case
-
-Gemini 2.5 Flash was used to analyze CRM data and generate:
-
-Sales insights
-
-Deal summaries
-
-Customer behavior analysis
-
-Pipeline opportunity interpretation
-
-This validates how AI can enhance HubSpot integrations.
-
-🔮 C. AI Usage Documentation
+🤖 C. AI Usage Documentation
 1. AI Tools Used
 
 Gemini 2.5 Flash
 
-Official SDK: @google/generative-ai
+@google/generative-ai SDK
 
 2. Tasks AI Was Used For
 
-Generating insights based on Contacts + Deals
+Generate insights from Contacts + Deals
 
-Sales summaries
+Summaries of customer activity
 
-Explaining deals and identifying risks
+Deal risk explanations
 
-Detecting patterns in the sales pipeline
+Pattern detection in the sales pipeline
 
-3. What Did You Learn? What Was Challenging?
+3. What Was Learned / Challenges
 
-Choosing the right model in the SDK was challenging — some models perform better for structured analysis, others for narrative output.
+Choosing the correct model version is key (some are better for reasoning, others for text).
 
-Key takeaway:
+Clean CRM data must be formatted before sending it to the AI.
 
-With the right prompt engineering, Gemini can produce highly actionable insights.
+Prompt engineering significantly improves the insight quality.
 
-Another challenge was cleaning and preparing CRM JSON responses before sending them to the model.
+4. How AI Helped
+Pros
 
-4. How Did AI Help (or Not Help)?
-Benefits
+Extremely fast analysis (seconds vs hours).
 
-Processes and analyzes data in seconds (vs hours/days for a human).
+Summaries that save time for sales teams.
 
-Summarizes large amounts of CRM data efficiently.
+Detects patterns humans can miss.
 
-Identifies patterns and offers explanations.
+Cons
 
-Limitations
+Requires human review; AI is not 100% accurate.
 
-AI is not 100% accurate → results need human validation.
-
-If the prompt is not controlled, the AI may infer non-existent information.
+Incorrect prompts generate irrelevant insights.
 
 🏗 D. HubSpot Data Architecture
 
-This section contains:
+Below is the complete answer for Part 2 of the assessment.
 
-Entity Relationship Diagram (ERD)
+1. Entity Relationship Diagram (ERD)
 
-Deal Pipeline Architecture
-
-📘 1. Entity Relationship Diagram (ERD)
-
-📌 Insert ERD image here
+📌 Insert ERD PNG here:
 /assets/erd.png
 
-Key Objects
+ERD Description
 
-Contacts – Final customer
+Contacts — represent customers
 
-Deals – Commercial opportunities
+Deals — represent opportunities
 
-Associations:
+Associations — 1 Contact → N Deals
 
-Contact ↔ Deals = 1:N
+This model is simplified intentionally to match Breezy's POC scope.
 
-Why This Architecture?
+2. Deal Pipeline Architecture
 
-The assessment requires a minimal POC.
-To avoid unnecessary complexity, objects like Companies, Tickets, Products, or Installation Jobs were intentionally excluded.
-
-The final model reflects exactly what the project needs — no more, no less.
-
-📈 2. Deal Pipeline Architecture
-
-📌 Insert Pipeline Diagram here
+📌 Insert Sales Pipeline PNG here:
 /assets/pipeline.png
 
-Recommended pipeline for Breezy (HVAC business):
+Suggested HVAC Sales Pipeline
 
 Lead Captured
 
@@ -194,112 +170,83 @@ Won
 
 Lost
 
-This pipeline aligns with the real customer journey of an HVAC business.
+This pipeline reflects real HVAC business processes.
 
-🤖 E. (Optional) AI Feature Explanation
-AI-Powered Feature
+🌟 E. (Optional) AI Feature Explanation
+AI-Powered Feature: Commercial Insights
 
-A module that generates real-time commercial insights based on CRM data.
+This feature analyzes:
 
-Produces:
+Contacts + Deals
 
-Customer briefs
+Pipeline performance
 
-Deal risk alerts
+Customer behaviors
 
-Opportunities for upsell/cross-sell
-
-Actionable recommendations
-
-Pattern detection within the pipeline
+Sales patterns
 
 Why This Feature?
 
-Data analysis is essential in any commercial process.
-AI dramatically reduces the time needed to evaluate opportunities and customers.
+Sales decision-making is improved when insights arrive instantly, not days later.
 
-How Does It Make the Integration Smarter?
+How It Makes the Integration Smarter
 
-Enables instant decision-making
+Accelerates decision-making
 
-Provides intelligent field mapping
+Enhances mapping and workflow intelligence
 
-Offers automated pattern recognition
+Learns from sales activity
 
-Learns over time from transactional behavior
+Identifies opportunities automatically
 
-AI vs Traditional Logic — When to Use Each?
-AI is ideal for:
+AI vs Rules/Logic
+Use Case	AI	Traditional Logic
+Data validation	❌	✔
+Sync and transformations	❌	✔
+Insight generation	✔	❌
+Pattern detection	✔	❌
 
-Post-integration analysis
-
-Insight generation
-
-Pattern detection
-
-Natural language summaries
-
-Traditional rules/logic are ideal for:
-
-Data validation
-
-Error handling
-
-Mapping and transformation
-
-Sync logic
-
-AI does not replace business logic — it enhances the integration.
+AI complements, not replaces, business logic.
 
 ⚙ F. Design Decisions
-1. Technical Choices & Why
+Technical Choices
 
-Node.js + Express → Fast and simple for REST integrations
+Node.js + Express → fast API integration
 
-React + Vite → Modern, lightweight, and scalable frontend
+React + Vite → lightweight and modern
 
-Gemini AI → Excellent for summarization and data reasoning
+Gemini AI → excellent reasoning and summarization
 
-HubSpot CRM API v3 → Stable and modern API
+HubSpot API v3 → reliable structure
 
-2. Assumptions About Breezy’s Platform
+Assumptions About Breezy’s Platform
 
-Breezy sells and installs air conditioners (HVAC business).
+They sell HVAC products (AC units).
 
-They have a defined sales pipeline.
+HubSpot is their CRM of choice.
 
-They want HubSpot fully embedded into their workflow.
+They need insight automation.
 
-They need fast data insights for decision-making.
+They want frictionless CRM + app integration.
 
-3. What I Would Improve With More Time
+Improvements with More Time
 
-Fine-tune prompts and models for deeper commercial insights
+Train prompts for deeper insights
 
-Add dashboards for analytics and insight visualization
+Build dashboards for analytics
 
-Expand the data model:
+Add more objects (Installations, Tickets, Products)
 
-Installation jobs
+Expand workflows and automations
 
-Service tickets
+Questions for the Client Before Production
 
-Product catalog
+How many leads per month?
 
-Improve the UX for contact/deal management
+What are the peak seasons?
 
-Handle more edge cases in the integration
+How fast should insights load?
 
-4. Questions to Ask Before a Production Build
+Required SLAs for the integration?
 
-How many leads per month do you expect?
-
-How fast does insight generation need to be?
-
-What are the seasonal sales peaks?
-
-Do we need auto-scaling during peak seasons?
-
-What SLAs must the integration meet?
-
-Which teams will consume these insights?
+Which teams will use the insights?
