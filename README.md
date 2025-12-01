@@ -143,7 +143,6 @@ This pipeline is designed specifically to track the revenue associated with the 
 * **Node.js + Express:** Chosen for a fast, scalable backend for API integration.
 * **React + Vite:** Chosen for a lightweight, modern frontend that allows rapid prototyping.
 * **Gemini 2.5 Flash:** Chosen for its excellent reasoning and summarization capabilities for quick data analysis.
-* **HubSpot API v3:** Chosen for its reliable, modern, and well-structured API.
 
 ### Assumptions About Breezy's Platform
 * **HubSpot** is their CRM of choice for Sales and Marketing.
