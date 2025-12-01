@@ -1,8 +1,8 @@
-# 🌬️ HubSpot + Gemini AI Integration POC: Breezy Air Systems
+# HubSpot + Gemini AI Integration POC: Breezy Air Systems
 
 This document serves as the final documentation and technical assessment for the **Proof of Concept (PoC)** demonstrating a seamless integration between an application stack, **HubSpot CRM**, and **Google Gemini AI** for Breezy Air Systems.
 
-## 🚀 1. Project Overview
+##  1. Project Overview
 
 This PoC showcases an end-to-end integration connecting:
 
@@ -16,11 +16,11 @@ The PoC demonstrates the **data integration** between the transactional applicat
 
 ---
 
-## 🛠️ 2. Setup and Testing Guide
+##  2. Setup and Testing Guide
 
 ### A. Setup Instructions
 
-#### 📋 Prerequisites
+####  Prerequisites
 Ensure you have the following components installed:
 
 * **Node.js** (v18+)
@@ -29,7 +29,7 @@ Ensure you have the following components installed:
 * **Google AI Studio Key** (for Gemini)
 * Web Browser (Chrome/Edge recommended)
 
-#### ⚙️ Backend Setup (Node.js)
+#### Backend Setup (Node.js)
 
 1.  Navigate to the backend folder:
     ```bash
@@ -52,9 +52,9 @@ Ensure you have the following components installed:
     ```bash
     node server.js
     ```
-    👉 **Backend URL:** `http://localhost:3001`
+    **Backend URL:** `http://localhost:3001`
 
-#### 💻 Frontend Setup (React + Vite)
+####  Frontend Setup (React + Vite)
 
 1.  Navigate to the frontend folder:
     ```bash
@@ -68,18 +68,18 @@ Ensure you have the following components installed:
     ```bash
     npm run dev
     ```
-    👉 **Frontend URL:** `http://localhost:5173`
+     **Frontend URL:** `http://localhost:5173`
 
 ### How to Test the Integration Flow
 
 1.  **Create a Contact:** Use the Contact Sync form to simulate a thermostat purchase/account creation. Verify the new Contact appears in the displayed list.
 2.  **Create a Deal:** Use the Deal Creation form to simulate a paid subscription conversion. Associate the Deal with the Contact you just created.
 3.  **Generate AI Insight:** Navigate to the AI Insights page and click the "Generate Insight" button.
-4.  **Validate Insight:** Gemini will analyze the HubSpot data (Contacts and Deals) and return the generated commercial insight.
+4.  **Validate Insight:** Gemini will analyze the HubSpot data ( Deals) and return the generated commercial insight.
 
 ---
 
-## 🤖 3. AI Usage Documentation
+## 3. AI Usage Documentation
 
 ### C. AI Usage Documentation
 
@@ -92,7 +92,7 @@ Ensure you have the following components installed:
 
 ---
 
-## 🌟 4. AI Feature Explanation
+##  4. AI Feature Explanation
 
 ### E. AI Feature Explanation: Commercial Insights
 
@@ -105,7 +105,7 @@ Ensure you have the following components installed:
 
 ---
 
-## 🏗️ 5. HubSpot Data Architecture
+##  5. HubSpot Data Architecture
 
 ### D. HubSpot Data Architecture
 
@@ -113,7 +113,7 @@ Ensure you have the following components installed:
 
 The recommended model incorporates a **Custom Object** alongside Contacts and Deals for accurate asset tracking, which is essential for identifying expansion opportunities (multiple unit ownership).
 
-📌 **Insert ERD PNG here: /assets/erd.png**
+ **Insert ERD PNG here: /assets/erd.png**
 
 | Object | Purpose | Association | Recommended Properties | Justification |
 | :--- | :--- | :--- | :--- | :--- |
@@ -137,7 +137,7 @@ This pipeline is designed specifically to track the revenue associated with the 
 
 ---
 
-## ⚙ F. Design Decisions
+##  F. Design Decisions
 
 ### Technical Choices
 * **Node.js + Express:** Chosen for a fast, scalable backend for API integration.
